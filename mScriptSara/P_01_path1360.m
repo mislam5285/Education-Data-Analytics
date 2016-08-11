@@ -62,6 +62,35 @@ rng('default');
 training = path1360(trainInd,:);
 testing = path1360(testInd,:);
 
+%%
+
+target_ = table2array(path1360(trainInd,target));
+edges_ =  [0 40 60 70 100];
+Y_ = discretize(target_, edges_); %{'F','P','M', 'D'});
+
+input_ = table2array(path1360(trainInd,features));
+%%
+status = {'F','P','M', 'D'};
+mark_range = 0:100;
+%for s_=1:4, 
+s_=1;
+
+figure(s_); clf; hold on;
+for i=1:4,
+  selected_row = Y_==i;
+  [f_(i,:),x]=ksdensity(input_(selected_row,s_),mark_range);
+  prior(i) = sum(selected_row)/numel(Y_);
+  likelihood_prior(i,:)= f_(i,:);% * prior(i) ;
+  plot(x,likelihood_prior(i,:));
+  label_{i} = sprintf('%s (%d)', status{i}, sum(selected_row));
+end;
+legend(label_);
+
+%%
+posterior = likelihood_prior ./ repmat( sum(likelihood_prior), 4,1);
+
+imagesc(posterior)
+
 %% 2 - train first year and test on the following year 
 %{
 training = path1360(path1360.StartYear=2009,:);
