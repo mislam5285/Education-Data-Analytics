@@ -36,11 +36,11 @@ col = cell2mat(values(mapObj, pathRecords.ModuleCode));
 % not availble mark, I have replace each real zero mark with a number out of the
 % mark range(0-100) => -1
 
-%pathRecords.Mark(pathRecords.Mark==0)=-1;
+pathRecords.Mark(pathRecords.Mark==0)=-1;
 
 % create a table where each module is represented as avariable (column) 
 % Using  MARKs as values for modules columns
-mat_ = sparse(row, col, pathRecords.MarkClass, numel(keys(idObj)), numel(keys(mapObj)));
+mat_ = sparse(row, col, pathRecords.Mark, numel(keys(idObj)), numel(keys(mapObj)));
 mat = full(mat_);
 
 % replce any zero value NaN => indicate that the student has not taken that module
