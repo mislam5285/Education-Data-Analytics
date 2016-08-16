@@ -22,7 +22,8 @@ path1360 = academic(academic.PathCode=='1360',:);
 path1360 = processPathRecords(path1360);
 %%
 path1360.Properties.VariableNames
-
+%%
+path1360(29,:)=[];
 %% Marks estimation 
 
 %% 1 - P(L5|L4) Predicate student L5 performance based on L4 performance
@@ -33,7 +34,7 @@ features = [14:17];
 % target = 18;  %m2001
 % target = 19;  %m2002
 % target = 20;  %m2003
- target = 21;  %m2004
+% target = 21;  %m2004
 % target = 22;  %m2005
 
 %% 2 - P(L6|L4,L5) Predicate student L6 performance based on L4 & L5 performance
@@ -69,6 +70,7 @@ edges_ =  [0 40 60 70 100];
 Y_ = discretize(target_, edges_); %{'F','P','M', 'D'});
 
 input_ = table2array(path1360(trainInd,features));
+
 %%  Bayesian Statistics
 status = {'F','P','M', 'D'};
 mark_range = 0:100;

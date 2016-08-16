@@ -75,6 +75,7 @@ testing = path1360(path1360.StartYear=2009,:);
 %%
 clear X Y ;
 X=[2:5]; Y=[7];
+%% run the classificaton app
 %%
 % To use the exported classifier 'LD1360_1' to make predictions on new data, T, use: 
 yfit = LD1360_1.predictFcn(testing(:,[X]));
