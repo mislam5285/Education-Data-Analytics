@@ -35,8 +35,9 @@ academic.Properties.VariableNames{'StudentIDCode_academic'} = 'StudentIDCode';
 academic.Properties.VariableNames{'GroupCount'} = 'ModulesCount';
 
 clear g;
-%% create Marks classes
 
+%% create Marks classes
+%{
 MC_=cell(size(academic,1),1);
 for i=1:size(MC_,1),
     if isnan(academic.Mark(i))
@@ -55,7 +56,27 @@ academic.MarkClass=MC_;
 academic.MarkClass=categorical(cellstr(academic.MarkClass));
 % academic.MarkClass(isundefined(academic.MarkClass)) = 'NaN';
 clear i MC_
+%}
 
+%% Remove students who have more than 2 zeros in one level (l4 and l5)
+% after reviewing studnents who has 2 zeros or more, some of them have all zeros in one level
+% and some have NaNs beside zeros, and the majority has failure or drop out status
+% so to avoide outliers in modelling, their records got removed.
+
+a=grpstats(academic,{'StudentIDCode','Mark'}, {'max'} ,'DataVars',{'Mark'});
+a(a.Mark>0,:)=[];
+a(a.GroupCount==1,:)=[];
+a = sortrows(a,'GroupCount','descend');
+% already stored the observed record that have to be removed in to remove cell array
+index_=ismember(academic.StudentIDCode,toremove);
+academic=academic(~index_,:);
+clear index_ a toremove
+
+%% remove the path 1412 module 2012 records
+% all students in this path who have taken 2012 have NaN as a mark 
+index_=academic.PathCode=='1412' & academic.ModuleCode=='2012';
+academic=academic(~index_,:);
+clear index_
 
 %%
 % nanStudents=academic(isnan(academic.Mark),{'StudentIDCode'});

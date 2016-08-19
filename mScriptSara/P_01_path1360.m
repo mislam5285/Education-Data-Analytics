@@ -18,24 +18,25 @@ load main_sara.mat academic;
             %%% Modules number 5: m3001 - m3002 - m3003 - m3004 - m3005
             
 %% Get and process the data
-path1360 = academic(academic.PathCode=='1360',:);
-path1360 = processPathRecords(path1360);
+path1097 = academic(academic.PathCode=='1097',:);
+%%
+path1097 = processPathRecords(path1097);
 %%
 
 %%
-path1360.Properties.VariableNames
+path1097.Properties.VariableNames
 
 %% Marks estimation 
 
 %% 1 - P(L5|L4) Predicate student L5 performance based on L4 performance
 
 % only academic performance
-features = [14:17];
+features = [14:25];
 
 % target = 18;  %m2001
 % target = 19;  %m2002
 % target = 20;  %m2003
- target = 21;  %m2004
+ target = 26;  %m2004
 % target = 22;  %m2005
 
 %% 2 - P(L6|L4,L5) Predicate student L6 performance based on L4 & L5 performance
@@ -53,10 +54,10 @@ features = [14:22];
 
 %% 1 - all years records
 rng('default');
-[trainInd,~,testInd] = dividerand(size(path1360,1),7,0,3);
+[trainInd,~,testInd] = dividerand(size(path1097,1),7,0,3);
 
-training = path1360(trainInd,:);
-testing = path1360(testInd,:);
+training = path1097(trainInd,:);
+testing = path1097(testInd,:);
 
 %% 2 - train first year and test on the following year 
 %{
@@ -212,11 +213,11 @@ view(cvRtree.Trained{1},'Mode','graph')
 
 %% Discretize the mark value for the classification 
 
-target_ = table2array(path1360(trainInd,target));
+target_ = table2array(path1097(trainInd,target));
 edges_ =  [0 40 60 70 100];
 Y_ = discretize(target_, edges_); %{'F','P','M', 'D'});
 
-input_ = table2array(path1360(trainInd,features));
+input_ = table2array(path1097(trainInd,features));
 %%  Bayesian Statistics
 status = {'F','P','M', 'D'};
 mark_range = 0:100;
@@ -240,5 +241,5 @@ posterior = likelihood_prior ./ repmat( sum(likelihood_prior), 4,1);
 imagesc(posterior)
 
 %%
-X_ = table2array(path1360(trainInd,features));
-Y_ = table2array(path1360(trainInd,target));
+X_ = table2array(path1097(trainInd,features));
+Y_ = table2array(path1097(trainInd,target));

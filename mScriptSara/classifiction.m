@@ -54,18 +54,18 @@ path1360(29,:)=[];
 target_ = table2array(path1360(:,target));
 edges_ =  [0 40 60 70 100];
 Y_ = discretize(target_, edges_); %{'F','P','M', 'D'});
-
-ds = path1360(:,[1 features target]);
-ds.MarkClass=Y_;
+%%
+cdtds = path1360(:,[1 features target]);
+cdtds.MarkClass=Y_;
 
 %% Generate training, validation and test sets
 
 %% 1 - all years records
 rng('default');
-[trainInd,~,testInd] = dividerand(size(ds,1),7,0,3);
+[trainInd,~,testInd] = dividerand(size(cdtds,1),7,0,3);
 
-training = ds(trainInd,:);
-testing = ds(testInd,:);
+cdt_training = cdtds(trainInd,:);
+cdt_testing = cdtds(testInd,:);
 
 %% 2 - train first year and test on the following year 
 %{

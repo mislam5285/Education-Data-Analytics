@@ -31,7 +31,7 @@ path1360(29,:)=[];
 % only academic performance
 features = [14:17];
 
-% target = 18;  %m2001
+target = 18;  %m2001
 % target = 19;  %m2002
 % target = 20;  %m2003
 % target = 21;  %m2004
