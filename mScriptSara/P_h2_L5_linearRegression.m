@@ -147,7 +147,7 @@ ylabel('Predicted R-squared');
 print('figures/p_l5_PredR2_vs_TrainingNum_mean','-dpng');
 
 %% Export to Excel 
-filename = 'Lmdl_L5.csv';
+filename = 'h2_Lmdl_L5.csv';
 writetable(h2_Lmdl_l5,filename);
 %%
 filename = 'Lmdl_L5_mean.csv';
