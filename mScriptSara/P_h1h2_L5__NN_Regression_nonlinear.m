@@ -34,7 +34,7 @@ h1_NN_l5  = cell2table(cell(0,11), 'VariableNames',...
      
      for t = 1:yc-1
          hrecords= zeros(xc-1,4);
-         for h = 1:xc-1 % loop through range of different hidden layer sizes
+         for h = 1:xc-1 % loop through range of different hidden layer sizes (no greater than the number of predictors) 
              
              % Creat a model
              clear net;
