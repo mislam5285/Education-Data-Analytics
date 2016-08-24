@@ -5,7 +5,7 @@
 %-------------------------------------------%
 
 %%
-load main_sara.mat academic sortedPath;
+load main_modelling.mat academic sortedPath;
 
 %% top paths ( min 40 student )
 
@@ -103,9 +103,13 @@ for p = 1:length(pathlist)
     end
 end
 
+
 %%
 clear PathCode StudentNum TrainingNum PredictorsNum Target 
 clear Accuracy Error ResponseRate temp_
 clear p t trainInd testInd ValidInd validlabel label
 clear pathRecords l4m l5m mList 
 clear xr xc yr yc X Y f m pl idx ar filename 
+%%
+filename = 'h3_ctree.csv';
+writetable(h3_Ctree_l5,filename);

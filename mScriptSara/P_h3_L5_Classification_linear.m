@@ -81,6 +81,10 @@ for p = 1:length(pathlist)
     end
 end
 
+filename = 'h3_CLmnr_l5.csv';
+writetable(h3_CLmnr_l5,filename);
+
+save modelling_nn.mat
 %%
 plot(h3_CLmnr_l5.TrainingNum,h3_CLmnr_l5.Accuracy,'mx','MarkerSize',7)
 title(sprintf('P(L5 module|L4 modules)\n\n Multinomial Logistic Regression \n'));

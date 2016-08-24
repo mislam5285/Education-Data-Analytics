@@ -8,12 +8,12 @@ load main_sara.mat academic sortedPath;
 
 %% top paths ( min 40 student )
 
-pathlist=table2cell(sortedPath(1:2,1));
+pathlist=table2cell(sortedPath(1:23,1));
 
 %%
-h1_NN_l5  = cell2table(cell(0,11), 'VariableNames',...
+h1_NN_l5  = cell2table(cell(0,12), 'VariableNames',...
     {'PathCode', 'StudentNum', 'TrainingNum', 'PredictorsNum', 'Target',...
-     'R2', 'MSE', 'RMSE','PredR2','PredMSE', 'PredRMSE'});
+     'H' ,'R2', 'MSE', 'RMSE','PredR2','PredMSE', 'PredRMSE'});
 
  %% 1 - P(L5|L4) Predicate student L5 performance based on L4 performance
  
@@ -34,16 +34,17 @@ h1_NN_l5  = cell2table(cell(0,11), 'VariableNames',...
      
      for t = 1:yc-1
          hrecords= zeros(xc-1,4);
+        
          for h = 1:xc-1 % loop through range of different hidden layer sizes (no greater than the number of predictors) 
              
              % Creat a model
              clear net;
              net = fitnet(h,trainFcn);
              
-             trials=zeros(10,3);
-             for Ntrials = 1 : 10 % random weight initializations for each h
+           %  trials=zeros(10,3);
+            % for Ntrials = 1 : 10 % random weight initializations for each h
                  
-                 % rng('default');
+                 rng('default');
                  % train the model
                  [net,tr] = train(net,X(trainInd,:)',Y(trainInd,t)');
                  
@@ -53,10 +54,11 @@ h1_NN_l5  = cell2table(cell(0,11), 'VariableNames',...
                  MSE = perform(net,Y(ValidInd,t)',VY);
                  RMSE = sqrt(MSE);
                  R2 = rsquared(Y(ValidInd,t)',VY);
-                 trials(Ntrials,:) = [ MSE, RMSE, R2];
-             end
-             
-             hrecords(h,:) = [h mean(trials,1)];  % record h size and the mean of MSE & R2 for the 10 random weight initializations
+             %    trials(Ntrials,:) = [ MSE, RMSE, R2];
+            % end
+            % mean(trials,1)
+            
+            hrecords(h,:) = [h MSE, RMSE, R2];  % record h size and the mean of MSE & R2 for the 10 random weight initializations
          end
          
          % choose based on the lower MSE
@@ -100,16 +102,20 @@ h1_NN_l5  = cell2table(cell(0,11), 'VariableNames',...
          PredR2 = rsquared(Y(testInd,t)',TestY);
          
          temp_ = cell2table({ PathCode, StudentNum, TrainingNum, PredictorsNum, ...
-             Target,R2, MSE, RMSE, PredR2, PredMSE, PredRMSE },'VariableNames', {'PathCode', ...
+             Target, bestH ,R2, MSE, RMSE, PredR2, PredMSE, PredRMSE },'VariableNames', {'PathCode', ...
              'StudentNum', 'TrainingNum', 'PredictorsNum', 'Target',...
-             'R2', 'MSE', 'RMSE','PredR2','PredMSE', 'PredRMSE'});
+             'H','R2', 'MSE', 'RMSE','PredR2','PredMSE', 'PredRMSE'});
          
          h1_NN_l5 = [h1_NN_l5; temp_];
          
      end
      %sprintf('%d : Path : %s DONE',p,pathlist{p})
  end
-
+%%
+filename = 'h1_NN_l5.csv';
+writetable(h1_NN_l5,filename);
+%%
+save modelling_nn.mat
  %%
  % Plots
 % Uncomment these lines to enable various plots.
