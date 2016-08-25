@@ -119,9 +119,7 @@ print('figures/p_l5_mnr__vs_TrainingNum_mean','-dpng');
 %% Export to Excel
 filename = 'h3_CLmnr_l5.csv';
 writetable(h3_CLmnr_l5,filename);
-%%
-filename = 'h3_CLmnr_l5_mean.csv';
-writetable(h3_CLmnr_l5_mean,filename);
+
 %%
 clear PathCode StudentNum TrainingNum PredictorsNum Target
 clear Accuracy Error ResponseRate temp_
